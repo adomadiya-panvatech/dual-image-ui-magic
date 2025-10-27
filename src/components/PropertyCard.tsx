@@ -1,26 +1,44 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { CheckCircle2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface PropertyCardProps {
   title: string;
-  subtitle: string;
+  description: string;
   image: string;
-  minAmount: string;
+  assetType: string;
+  fundingBadge: string;
+  additionalBadge?: string;
+  fundingStatus: string;
+  fundingPercentage: number;
   fundingEndDate: string;
-  offeringSize: string;
-  status: string;
+  borrower: string;
+  borrowerLink?: string;
+  manager: string;
+  managerLink?: string;
+  minimumOrder: string;
+  couponRate: string;
+  investmentTerm: string;
 }
 
 const PropertyCard = ({
   title,
-  subtitle,
+  description,
   image,
-  minAmount,
+  assetType,
+  fundingBadge,
+  additionalBadge,
+  fundingStatus,
+  fundingPercentage,
   fundingEndDate,
-  offeringSize,
-  status,
+  borrower,
+  borrowerLink,
+  manager,
+  managerLink,
+  minimumOrder,
+  couponRate,
+  investmentTerm,
 }: PropertyCardProps) => {
   return (
     <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl group">
@@ -31,45 +49,111 @@ const PropertyCard = ({
           alt={title}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
-        <div className="absolute top-4 right-4">
-          <Badge className="bg-success text-success-foreground flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium shadow-lg">
-            <CheckCircle2 className="w-4 h-4" />
-            {status}
+        {/* Badges */}
+        <div className="absolute top-4 left-4 flex gap-2">
+          <Badge className="bg-[hsl(237,84%,64%)] text-white border-0 px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-lg">
+            {fundingBadge}
           </Badge>
+          {additionalBadge && (
+            <Badge className="bg-[hsl(200,100%,60%)] text-white border-0 px-3 py-1 text-xs font-bold uppercase tracking-wide shadow-lg">
+              {additionalBadge}
+            </Badge>
+          )}
         </div>
       </div>
 
       {/* Content Section */}
       <div className="p-6">
+        {/* Asset Type */}
+        <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2 font-semibold">
+          {assetType}
+        </p>
+
         {/* Title Section */}
-        <div className="mb-6">
-          <h3 className="text-2xl font-bold text-foreground mb-1">{title}</h3>
-          <p className="text-sm text-muted-foreground">{subtitle}</p>
+        <div className="mb-4">
+          <h3 className="text-lg font-bold text-foreground mb-2 leading-tight">
+            {title}
+          </h3>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            {description}
+          </p>
         </div>
 
-        {/* Details Grid */}
-        <div className="grid grid-cols-2 gap-6 mb-6">
-          <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">
-              Min Amount
-            </p>
-            <p className="text-2xl font-bold text-foreground">{minAmount}</p>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">
-              Offering Size
-            </p>
-            <p className="text-2xl font-bold text-success">{offeringSize}</p>
-          </div>
-        </div>
-
+        {/* Progress Bar Section */}
         <div className="mb-6 pb-6 border-b border-border">
-          <p className="text-xs text-muted-foreground uppercase tracking-wide mb-1.5">
-            Funding end date
-          </p>
-          <p className="text-base font-semibold text-foreground">
-            {fundingEndDate}
-          </p>
+          <Progress value={fundingPercentage} className="h-2 mb-3" />
+          <div className="flex justify-between items-center text-sm">
+            <span className="font-bold text-primary">{fundingStatus}</span>
+            <span className="text-muted-foreground">
+              FUNDING ENDS {fundingEndDate}
+            </span>
+          </div>
+        </div>
+
+        {/* Details List */}
+        <div className="space-y-3 mb-6">
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+              Borrower
+            </span>
+            {borrowerLink ? (
+              <a
+                href={borrowerLink}
+                className="text-sm font-semibold text-[hsl(237,84%,64%)] hover:underline"
+              >
+                {borrower}
+              </a>
+            ) : (
+              <span className="text-sm font-semibold text-foreground">
+                {borrower}
+              </span>
+            )}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+              Manager
+            </span>
+            {managerLink ? (
+              <a
+                href={managerLink}
+                className="text-sm font-semibold text-[hsl(237,84%,64%)] hover:underline"
+              >
+                {manager}
+              </a>
+            ) : (
+              <span className="text-sm font-semibold text-foreground">
+                {manager}
+              </span>
+            )}
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+              Minimum Order
+            </span>
+            <span className="text-sm font-semibold text-foreground">
+              {minimumOrder}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+              Coupon Rate
+            </span>
+            <span className="text-sm font-semibold text-foreground">
+              {couponRate}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+              Investment Term
+            </span>
+            <span className="text-sm font-semibold text-foreground">
+              {investmentTerm}
+            </span>
+          </div>
         </div>
 
         {/* Action Button */}
