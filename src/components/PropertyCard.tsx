@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
+import { useNavigate } from "react-router-dom";
 
 interface PropertyCardProps {
   title: string;
@@ -40,6 +41,33 @@ const PropertyCard = ({
   couponRate,
   investmentTerm,
 }: PropertyCardProps) => {
+  const navigate = useNavigate();
+
+  const handleViewOffer = () => {
+    navigate(`/offer/${title.replace(/\s+/g, "-").toLowerCase()}`, {
+      state: {
+        property: {
+          title,
+          description,
+          image,
+          assetType,
+          fundingBadge,
+          additionalBadge,
+          fundingStatus,
+          fundingPercentage,
+          fundingEndDate,
+          borrower,
+          borrowerLink,
+          manager,
+          managerLink,
+          minimumOrder,
+          couponRate,
+          investmentTerm,
+        },
+      },
+    });
+  };
+
   return (
     <Card className="overflow-hidden transition-all duration-300 hover:shadow-xl group">
       {/* Image Section */}
@@ -158,6 +186,7 @@ const PropertyCard = ({
 
         {/* Action Button */}
         <Button
+          onClick={handleViewOffer}
           className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-semibold py-6 text-base transition-all duration-300"
           size="lg"
         >
